@@ -2,6 +2,9 @@
 
 This document outlines the endpoints available for user management and retrieval in the Users API.
 
+[![Link Icon](https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-link-web-flaticons-flat-flat-icons.png) Click here for Link](https://bloomzon-server.onrender.com/v1/docs/)
+
+
 ## Create a User
 
 ### POST /users
