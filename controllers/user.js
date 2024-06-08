@@ -3,9 +3,9 @@ const httpStatus = require("http-status");
 
 // Create a new user
 const createUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
   try {
-    const user = await User.create({ username, email, password });
+    const user = await User.create({name, email, password });
     res.status(httpStatus.CREATED).json(user);
   } catch (error) {
     res
