@@ -3,10 +3,11 @@ const httpStatus = require("http-status");
 
 // Create a new user
 const createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const user = await User.create({name, email, password });
+    const user = await User.create({ email, password });
     res.status(httpStatus.CREATED).json(user);
+    console.log("all input " + user);
   } catch (error) {
     res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
@@ -44,11 +45,10 @@ const getUser = async (req, res) => {
 
 // Update a user
 const updateUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const {email, password } = req.body;
   try {
     const user = await User.findByPk(req.params.userId);
     if (user) {
-      user.username = username || user.username;
       user.email = email || user.email;
       user.password = password || user.password;
       await user.save();
