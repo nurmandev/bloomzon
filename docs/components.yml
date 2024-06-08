@@ -4,15 +4,22 @@ components:
       type: object
       properties:
         id:
+          type: integer
+          description: The user ID
+        username:
           type: string
+          description: The user's username
         email:
           type: string
-          format: email
-        name:
+          description: The user's email
+        createdAt:
           type: string
-        role:
+          format: date-time
+          description: The date when the user was created
+        updatedAt:
           type: string
-          enum: [user, admin]
+          format: date-time
+          description: The date when the user was last updated
       example:
         id: 5ebac534954b54139806c112
         email: fake@example.com
@@ -23,20 +30,112 @@ components:
       type: object
       properties:
         id:
+          type: integer
+          description: The auto-generated id of the video
+        title:
           type: string
-        email:
+          description: Title of the video
+        description:
           type: string
-          format: email
-        name:
+          description: Description of the video
+        rating:
+          type: number
+          description: Rating of the video
+        num_ratings:
+          type: integer
+          description: Number of ratings the video has received
+        age_rating:
           type: string
-        role:
-          type: string
-          enum: [user, admin]
+          description: Age rating of the video
+        uhd:
+          type: boolean
+          description: Indicates if the video supports UHD
+        xray:
+          type: boolean
+          description: Indicates if the video supports X-Ray
+        hdr:
+          type: boolean
+          description: Indicates if the video supports HDR
+        userId:
+          type: integer
+          description: The ID of the user who uploaded the video
+      required:
+        - title
+        - userId
       example:
-        id: 5ebac534954b54139806c112
-        email: fake@example.com
-        name: fake name
-        role: user
+        id: 1
+        title: Sample Video
+        description: A sample video description
+        rating: 4.5
+        num_ratings: 100
+        age_rating: PG-13
+        uhd: true
+        xray: false
+        hdr: true
+        userId: 1
+
+    Episode:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The auto-generated id of the episode
+        title:
+          type: string
+          description: Title of the episode
+        description:
+          type: string
+          description: Description of the episode
+        episode_number:
+          type: integer
+          description: Episode number
+        season_number:
+          type: integer
+          description: Season number
+        video_url:
+          type: string
+          description: URL of the episode video
+        videoId:
+          type: integer
+          description: The ID of the associated video
+      required:
+        - title
+        - episode_number
+        - season_number
+        - video_url
+        - videoId
+      example:
+        id: 1
+        title: Episode 1
+        description: A sample episode
+        episode_number: 1
+        season_number: 1
+        video_url: http://example.com/video.mp4
+        videoId: 1
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The auto-generated id of the review
+        rating:
+          type: integer
+          description: Rating of the review
+        review_text:
+          type: string
+          description: Text of the review
+        videoId:
+          type: integer
+          description: The ID of the associated video
+      required:
+        - rating
+        - videoId
+      example:
+        id: 1
+        rating: 5
+        review_text: Excellent video!
+        videoId: 1
 
     Token:
       type: object

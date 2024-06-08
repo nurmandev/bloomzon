@@ -1,2 +1,4 @@
-module.exports.userController = require("./user.controller");
-module.exports.videoController = require("./video.controller");
+module.exports.userController = require("./user");
+module.exports.videoController = require("./video");
+module.exports.episodeController = require("./episode");
+module.exports.reviewController = require("./review");

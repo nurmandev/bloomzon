@@ -6,7 +6,7 @@ const morgan = require("morgan");
 
 const routes = require("./routes/v1");
 
-const { sequelize } = require("./models");
+const { sequelize, syncDatabase } = require("./models");
 
 // Configurations
 dotenv.config();
@@ -36,8 +36,9 @@ app.use("/v1", routes);
 
 // Setup Server
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, async () => {
-  console.log(`Server is running on port: ${PORT}`);
-  await sequelize.sync({ alter: true });
-  console.log("Database synced.");
+
+syncDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });

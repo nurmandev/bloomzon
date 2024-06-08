@@ -1,47 +1,38 @@
-"use strict";
+const sequelize = require("../config/database");
+const Video = require("./video");
+const Episode = require("./episode");
+const Review = require("./review");
+const Subtitle = require("./subtitle");
+const User = require("./user");
 
-const fs = require("fs");
-const path = require("path");
-const Sequelize = require("sequelize");
-const process = require("process");
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.json")[env];
-const db = {};
+// Define associations
+User.hasMany(Video, { foreignKey: "userId" });
+Video.belongsTo(User, { foreignKey: "userId" });
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
-}
+Video.hasMany(Episode, { foreignKey: "videoId" });
+Episode.belongsTo(Video, { foreignKey: "videoId" });
 
-fs.readdirSync(__dirname)
-  .filter((file) => {
-    return (
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
-    );
-  })
-  .forEach((file) => {
-    const model = require(path.join(__dirname, file))(
-      sequelize,
-      Sequelize.DataTypes
-    );
-    db[model.name] = model;
-  });
+Video.hasMany(Review, { foreignKey: "videoId" });
+Review.belongsTo(Video, { foreignKey: "videoId" });
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+Video.hasMany(Subtitle, { foreignKey: "videoId" });
+Subtitle.belongsTo(Video, { foreignKey: "videoId" });
+
+const syncDatabase = async () => {
+  try {
+    await sequelize.sync({ alter: true }); // Use { force: true } to drop and recreate tables
+    console.log("Database synced!");
+    await sequelize.authenticate();
+  } catch (error) {
+    console.error("Failed to sync database:", error);
   }
-});
+};
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+module.exports = {
+  Video,
+  Episode,
+  Review,
+  Subtitle,
+  User,
+  syncDatabase,
+};
